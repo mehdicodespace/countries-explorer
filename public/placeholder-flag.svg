@@ -1,0 +1,6 @@
+<svg width="320" height="240" viewBox="0 0 320 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="320" height="240" fill="#F3F4F6"/>
+  <rect x="0" y="80" width="320" height="80" fill="#FFFFFF"/>
+  <rect x="0" y="160" width="320" height="80" fill="#FFFFFF"/>
+  <text x="160" y="120" fill="#9CA3AF" font-family="Arial, sans-serif" font-size="14" text-anchor="middle">Flag not available</text>
+</svg>
