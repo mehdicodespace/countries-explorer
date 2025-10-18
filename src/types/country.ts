@@ -51,3 +51,17 @@ export const REGIONS = [
 ] as const;
 
 export type Region = typeof REGIONS[number];
+
+// Sort options for countries
+export type SortBy = 'name' | 'population';
+export type SortOrder = 'asc' | 'desc';
+
+export const SORT_BY_OPTIONS = [
+  { value: 'name' as const, label: 'Name' },
+  { value: 'population' as const, label: 'Population' },
+] as const;
+
+export const SORT_ORDER_OPTIONS = [
+  { value: 'asc' as const, label: 'Ascending' },
+  { value: 'desc' as const, label: 'Descending' },
+] as const;

@@ -1,20 +1,11 @@
 <template>
-  <div class="relative w-80">
+  <div class="relative w-full sm:w-96">
     <!-- Search Icon -->
     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-      <svg 
+      <font-awesome-icon 
+        icon="search" 
         class="h-5 w-5 text-neutral-500 dark:text-neutral-400" 
-        fill="none" 
-        stroke="currentColor" 
-        viewBox="0 0 24 24"
-      >
-        <path 
-          stroke-linecap="round" 
-          stroke-linejoin="round" 
-          stroke-width="2" 
-          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-        />
-      </svg>
+      />
     </div>
     
     <!-- Input Field -->
@@ -36,9 +27,7 @@
       class="absolute inset-y-0 right-0 pr-4 flex items-center text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200 transition-colors duration-200"
       type="button"
     >
-      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-      </svg>
+      <font-awesome-icon icon="times" class="h-5 w-5" />
     </button>
   </div>
 </template>
@@ -55,7 +44,7 @@ const props = withDefaults(defineProps<Props>(), {
 // Use defineModel for v-model
 const modelValue = defineModel<string>();
 
-// Handle input changes
+// Handle input changes immediately
 const handleInput = (event: Event) => {
   const target = event.target as HTMLInputElement;
   modelValue.value = target.value;

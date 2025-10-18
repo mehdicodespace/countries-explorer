@@ -2,9 +2,9 @@
   <div class="min-h-screen bg-neutral-50 dark:bg-primary-900">
     <!-- Header -->
     <header class="bg-neutral-0 dark:bg-primary shadow-md">
-      <div class="w-[92%] mx-auto px-6 py-6">
+      <div class="w-[92%] mx-auto px-4 py-4 sm:px-6 sm:py-6">
         <div class="flex justify-between items-center">
-          <h1 class="text-2xl font-extrabold text-neutral-900 dark:text-neutral-0">
+          <h1 class="text-lg sm:text-xl md:text-2xl font-extrabold text-neutral-900 dark:text-neutral-0">
             Where in the world?
           </h1>
           <ThemeToggle />
@@ -13,18 +13,77 @@
     </header>
 
     <!-- Main Content -->
-    <main class="w-[92%] mx-auto px-6 py-8">
+    <main class="w-[92%] mx-auto px-4 py-6 sm:px-6 sm:py-8">
       <!-- Search and Filter Controls -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
-        <SearchInput 
-          v-model="searchQuery"
-          @search="handleSearch"
-          :has-error="!!error"
-        />
-        <RegionFilter 
-          v-model="selectedRegion"
-          @change="handleRegionChange"
-        />
+      <div class="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-6 mb-8">
+        <!-- Search Input -->
+        <div class="w-full lg:w-auto">
+          <SearchInput 
+            v-model="searchQuery"
+            @search="handleSearch"
+            :has-error="!!error"
+          />
+        </div>
+        
+        <!-- Filter Controls -->
+        <div class="flex flex-col sm:flex-row gap-4">
+          <!-- Region Filter -->
+          <div class="flex-1 sm:flex-none">
+            <div class="cursor-pointer" @click="regionDropdownRef?.$el.querySelector('button')?.click()">
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <font-awesome-icon icon="globe" class="h-4 w-4" />
+                Region
+              </label>
+              <div @click.stop>
+                <DropdownInput 
+                  ref="regionDropdownRef"
+                  v-model="selectedRegion"
+                  :options="regionOptions"
+                  placeholder="Filter by Region"
+                  width="w-full sm:w-48"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sort By Filter -->
+          <div class="flex-1 sm:flex-none">
+            <div class="cursor-pointer" @click="sortByDropdownRef?.$el.querySelector('button')?.click()">
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <font-awesome-icon icon="sort" class="h-4 w-4" />
+                Sort By
+              </label>
+              <div @click.stop>
+                <DropdownInput 
+                  ref="sortByDropdownRef"
+                  v-model="sortBy"
+                  :options="sortByOptions"
+                  placeholder="Sort by..."
+                  width="w-full sm:w-40"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sort Order Filter -->
+          <div class="flex-1 sm:flex-none">
+            <div class="cursor-pointer" @click="sortOrderDropdownRef?.$el.querySelector('button')?.click()">
+              <label class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center gap-2 hover:text-gray-900 dark:hover:text-gray-100 transition-colors">
+                <font-awesome-icon icon="arrows-up-down" class="h-4 w-4" />
+                Order
+              </label>
+              <div @click.stop>
+                <DropdownInput 
+                  ref="sortOrderDropdownRef"
+                  v-model="sortOrder"
+                  :options="sortOrderOptions"
+                  placeholder="Order..."
+                  width="w-full sm:w-32"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- Loading State -->
@@ -32,6 +91,7 @@
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         <p class="ml-4 text-neutral-500 dark:text-neutral-400">Loading countries...</p>
       </div>
+
 
       <!-- Error State -->
       <div v-else-if="error" class="text-center py-12">
@@ -51,7 +111,7 @@
       </div>
 
       <!-- Countries Grid -->
-      <div v-if="!isLoading && !error && hasCountries" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-16">
+      <div v-if="!isLoading && !error && hasCountries" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 md:gap-12 lg:gap-16">
         <CountryCard
           v-for="country in countries"
           :key="country.cca3"
@@ -87,43 +147,74 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { useCountriesStore } from '@/stores/countries';
 import { useThemeStore } from '@/stores/theme';
 import type { CountryCard as CountryCardType, Region } from '@/types/country';
+import { SORT_BY_OPTIONS, SORT_ORDER_OPTIONS, REGIONS } from '@/types/country';
 import CountryCard from '@/components/country/CountryCard.vue';
-import SearchInput from '@/components/ui/SearchInput.vue';
-import RegionFilter from '@/components/ui/RegionFilter.vue';
+import SearchInput from '@/components/ui/forms/SearchInput.vue';
+import DropdownInput from '@/components/ui/forms/DropdownInput.vue';
 import ThemeToggle from '@/components/ui/ThemeToggle.vue';
 
 const router = useRouter();
 const countriesStore = useCountriesStore();
+
+// Dropdown refs
+const regionDropdownRef = ref();
+const sortByDropdownRef = ref();
+const sortOrderDropdownRef = ref();
 
 // Get reactive store data
 const { 
   countries, 
   searchQuery, 
   selectedRegion, 
+  sortBy,
+  sortOrder,
   isLoading, 
   error, 
-  hasCountries,
-  updateSearch,
-  updateRegion,
-  clearFilters,
-  refetch 
+  hasCountries
 } = storeToRefs(countriesStore);
+
+// Get store actions
+const { updateSearch, updateRegion, updateSortBy, updateSortOrder, clearFilters, refetch } = countriesStore;
+
+// Dropdown options
+const regionOptions = REGIONS.map(region => ({
+  value: region,
+  label: region === 'All' ? 'All Regions' : region
+}));
+
+const sortByOptions = SORT_BY_OPTIONS.map(option => ({
+  value: option.value,
+  label: option.label
+}));
+
+const sortOrderOptions = SORT_ORDER_OPTIONS.map(option => ({
+  value: option.value,
+  label: option.label
+}));
 
 // Handle search input
 const handleSearch = (query: string) => {
   updateSearch(query);
 };
 
-// Handle region change
-const handleRegionChange = (region: Region) => {
-  updateRegion(region);
-};
+// Watch for dropdown changes
+watch(selectedRegion, (newRegion) => {
+  updateRegion(newRegion);
+});
+
+watch(sortBy, (newSortBy) => {
+  updateSortBy(newSortBy);
+});
+
+watch(sortOrder, (newSortOrder) => {
+  updateSortOrder(newSortOrder);
+});
 
 // Handle country card click
 const handleCountryClick = (country: CountryCardType) => {
@@ -131,4 +222,5 @@ const handleCountryClick = (country: CountryCardType) => {
   console.log('Country clicked:', country);
   // router.push(`/country/${country.cca3}`);
 };
+
 </script>
