@@ -41,7 +41,7 @@
         <h3 class="text-xl font-semibold mb-2">Failed to load country</h3>
         <p class="text-neutral-500 dark:text-neutral-400 mb-4">{{ error.message }}</p>
         <button
-          @click="refetch"
+          @click="() => refetch()"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           Try Again
@@ -138,7 +138,7 @@
               <!-- Border country buttons -->
               <button
                 v-else
-                v-for="borderCountry in safeBorderCountries"
+                v-for="borderCountry in borderCountries"
                 :key="borderCountry.cca3"
                 @click="navigateToCountry(borderCountry.cca3)"
                 class="px-4 py-2 bg-white dark:bg-primary text-neutral-900 dark:text-white rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-0 text-sm cursor-pointer"
@@ -165,7 +165,7 @@
         <h3 class="text-xl font-semibold mb-2">Country data not available</h3>
         <p class="mb-4">The requested country information could not be loaded.</p>
         <button
-          @click="refetch"
+          @click="() => refetch()"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
         >
           Try Again
@@ -212,9 +212,6 @@ const { data: borderCountries = [], isLoading: isLoadingBorders } = useQuery({
   queryFn: () => countriesApi.getByCodes(country.value?.borders || []),
   enabled: computed(() => !!(country.value?.borders && country.value.borders.length > 0)),
 })
-
-// Ensure borderCountries is always an array
-const safeBorderCountries = computed(() => borderCountries.value || [])
 
 // Format large numbers with commas
 const formatNumber = (num: number): string => {
