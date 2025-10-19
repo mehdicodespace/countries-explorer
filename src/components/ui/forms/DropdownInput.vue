@@ -37,7 +37,7 @@ const displayValue = computed(() => {
     <Listbox v-model="modelValue">
       <div class="relative">
         <ListboxButton :class="buttonClass">
-          <span class="block truncate dark:text-white">
+          <span class="block dark:text-white">
             {{ displayValue }}
           </span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
