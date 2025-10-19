@@ -132,19 +132,30 @@
             </span>
             <div class="flex flex-wrap gap-2">
               <!-- Loading state for border countries -->
-              <div v-if="isLoadingBorders" class="text-neutral-500 dark:text-neutral-400 text-sm">
+              <div
+                v-if="isLoadingBorders"
+                class="flex items-center gap-2 text-neutral-500 dark:text-neutral-400 text-sm"
+              >
+                <div
+                  class="animate-spin rounded-full h-4 w-4 border-b-2 border-neutral-500 dark:border-neutral-400"
+                ></div>
                 Loading border countries...
               </div>
               <!-- Border country buttons -->
-              <button
-                v-else
-                v-for="borderCountry in borderCountries"
-                :key="borderCountry.cca3"
-                @click="navigateToCountry(borderCountry.cca3)"
-                class="px-4 py-2 bg-white dark:bg-primary text-neutral-900 dark:text-white rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-0 text-sm cursor-pointer"
-              >
-                {{ borderCountry.name }}
-              </button>
+              <template v-else-if="borderCountries && borderCountries.length > 0">
+                <button
+                  v-for="borderCountry in borderCountries"
+                  :key="borderCountry.cca3"
+                  @click="navigateToCountry(borderCountry.cca3)"
+                  class="px-4 py-2 bg-white dark:bg-primary text-neutral-900 dark:text-white rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-0 text-sm cursor-pointer"
+                >
+                  {{ borderCountry.name }}
+                </button>
+              </template>
+              <!-- No border countries -->
+              <div v-else class="text-neutral-500 dark:text-neutral-400 text-sm">
+                No border countries
+              </div>
             </div>
           </div>
         </div>
@@ -208,9 +219,15 @@ const {
 
 // Fetch border countries
 const { data: borderCountries = [], isLoading: isLoadingBorders } = useQuery({
-  queryKey: ['border-countries', country.value?.borders],
-  queryFn: () => countriesApi.getByCodes(country.value?.borders || []),
+  queryKey: ['border-countries', countryCode],
+  queryFn: async () => {
+    if (!country.value?.borders || country.value.borders.length === 0) {
+      return []
+    }
+    return countriesApi.getByCodes(country.value.borders)
+  },
   enabled: computed(() => !!(country.value?.borders && country.value.borders.length > 0)),
+  staleTime: 0, // Always refetch border countries when country changes
 })
 
 // Format large numbers with commas
