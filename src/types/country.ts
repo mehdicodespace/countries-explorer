@@ -1,34 +1,63 @@
 // Country data interfaces based on REST Countries API v3.1
 export interface Country {
   name: {
-    common: string;
-    official: string;
+    common: string
+    official: string
     nativeName?: {
       [key: string]: {
-        official: string;
-        common: string;
-      };
-    };
-  };
+        official: string
+        common: string
+      }
+    }
+  }
   flags: {
-    png: string;
-    svg: string;
-    alt?: string;
-  };
-  population: number;
-  region: string;
-  capital: string[];
-  cca3: string; // Country code for border countries
+    png: string
+    svg: string
+    alt?: string
+  }
+  population: number
+  region: string
+  subregion?: string
+  capital: string[]
+  cca3: string // Country code for border countries
+  cca2?: string
+  currencies?: {
+    [key: string]: {
+      name: string
+      symbol: string
+    }
+  }
+  languages?: {
+    [key: string]: string
+  }
+  tld?: string[]
+  borders?: string[]
 }
 
 // Simplified country interface for the home page
 export interface CountryCard {
-  name: string;
-  flag: string;
-  population: number;
-  region: string;
-  capital: string;
-  cca3: string;
+  name: string
+  flag: string
+  population: number
+  region: string
+  capital: string
+  cca3: string
+}
+
+// Detailed country interface for the detail page
+export interface CountryDetail {
+  name: string
+  nativeName: string
+  population: number
+  region: string
+  subregion: string
+  capital: string
+  flag: string
+  topLevelDomain: string
+  currencies: string
+  languages: string
+  borders: string[]
+  cca3: string
 }
 
 // API response types
@@ -36,32 +65,25 @@ export interface CountriesResponse extends Array<Country> {}
 
 // Filter and search types
 export interface CountryFilters {
-  search: string;
-  region: string;
+  search: string
+  region: string
 }
 
 // Regions for the filter dropdown
-export const REGIONS = [
-  'All',
-  'Africa',
-  'Americas', 
-  'Asia',
-  'Europe',
-  'Oceania'
-] as const;
+export const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'] as const
 
-export type Region = typeof REGIONS[number];
+export type Region = (typeof REGIONS)[number]
 
 // Sort options for countries
-export type SortBy = 'name' | 'population';
-export type SortOrder = 'asc' | 'desc';
+export type SortBy = 'name' | 'population'
+export type SortOrder = 'asc' | 'desc'
 
 export const SORT_BY_OPTIONS = [
   { value: 'name' as const, label: 'Name' },
   { value: 'population' as const, label: 'Population' },
-] as const;
+] as const
 
 export const SORT_ORDER_OPTIONS = [
   { value: 'asc' as const, label: 'Ascending' },
   { value: 'desc' as const, label: 'Descending' },
-] as const;
+] as const

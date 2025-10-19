@@ -3,23 +3,35 @@ import { createPinia } from 'pinia'
 import { VueQueryPlugin } from '@tanstack/vue-query'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { 
-  faSearch, 
-  faTimes, 
-  faChevronDown, 
+import {
+  faSearch,
+  faTimes,
+  faChevronDown,
+  faChevronLeft,
   faCheck,
   faMoon,
   faSun,
   faGlobe,
   faSort,
-  faArrowsUpDown
+  faArrowsUpDown,
 } from '@fortawesome/free-solid-svg-icons'
 import './assets/tailwind.css'
 import App from './App.vue'
 import router from './router'
 
 // Add icons to the library
-library.add(faSearch, faTimes, faChevronDown, faCheck, faMoon, faSun, faGlobe, faSort, faArrowsUpDown)
+library.add(
+  faSearch,
+  faTimes,
+  faChevronDown,
+  faChevronLeft,
+  faCheck,
+  faMoon,
+  faSun,
+  faGlobe,
+  faSort,
+  faArrowsUpDown,
+)
 
 const app = createApp(App)
 
