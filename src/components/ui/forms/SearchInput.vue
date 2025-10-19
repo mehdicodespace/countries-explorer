@@ -1,25 +1,22 @@
 <template>
-  <div class="relative w-full sm:w-96">
+  <div class="relative w-full sm:w-96 lg:w-[550px]">
     <!-- Search Icon -->
     <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-      <font-awesome-icon 
-        icon="search" 
-        class="h-5 w-5 text-neutral-500 dark:text-neutral-400" 
-      />
+      <font-awesome-icon icon="search" class="h-5 w-5 text-neutral-500 dark:text-neutral-400" />
     </div>
-    
+
     <!-- Input Field -->
     <input
       :value="modelValue"
       @input="handleInput"
       type="text"
       placeholder="Search for a country..."
-      class="w-full pl-12 pr-4 py-4 bg-neutral-0 dark:bg-primary text-neutral-900 dark:text-neutral-0 placeholder-neutral-500 dark:placeholder-neutral-400 border-0 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"
+      class="w-full pl-12 pr-4 py-4 bg-white dark:bg-primary text-neutral-900 dark:text-white placeholder-neutral-500 dark:placeholder-neutral-400 border-0 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 transition-all duration-200"
       :class="{
-        'ring-2 ring-red-500 ring-opacity-50': hasError
+        'ring-2 ring-red-500 ring-opacity-50': hasError,
       }"
     />
-    
+
     <!-- Clear Button (when there's text) -->
     <button
       v-if="modelValue"
@@ -34,24 +31,24 @@
 
 <script setup lang="ts">
 interface Props {
-  hasError?: boolean;
+  hasError?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   hasError: false,
-});
+})
 
 // Use defineModel for v-model
-const modelValue = defineModel<string>();
+const modelValue = defineModel<string>()
 
 // Handle input changes immediately
 const handleInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  modelValue.value = target.value;
-};
+  const target = event.target as HTMLInputElement
+  modelValue.value = target.value
+}
 
 // Clear search
 const clearSearch = () => {
-  modelValue.value = '';
-};
+  modelValue.value = ''
+}
 </script>

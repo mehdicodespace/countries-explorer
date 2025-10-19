@@ -2,14 +2,16 @@
   <div class="relative">
     <Listbox v-model="modelValue">
       <div class="relative">
-        <ListboxButton
-          :class="buttonClass"
-        >
-          <span class="block truncate">
+        <ListboxButton :class="buttonClass">
+          <span class="block truncate dark:text-white">
             {{ displayValue }}
           </span>
           <span class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <font-awesome-icon icon="chevron-down" class="h-5 w-5 text-gray-400" aria-hidden="true" />
+            <font-awesome-icon
+              icon="chevron-down"
+              class="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
           </span>
         </ListboxButton>
 
@@ -19,7 +21,7 @@
           leave-to-class="opacity-0"
         >
           <ListboxOptions
-            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-dark-elements py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+            class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-primary text-base shadow-lg ring-1 ring-gray-300 dark:ring-gray-600 focus:outline-none sm:text-sm"
           >
             <ListboxOption
               v-for="option in options"
@@ -31,22 +33,17 @@
               <li
                 :class="[
                   active
-                    ? 'bg-primary-100 dark:bg-primary-900 text-primary-900 dark:text-primary-100'
+                    ? 'bg-gray-100 dark:bg-primary-900 text-gray-900 dark:text-white'
                     : 'text-gray-900 dark:text-white',
-                  'relative cursor-pointer select-none py-2 pl-10 pr-4'
+                  'relative cursor-pointer select-none py-2 pl-10 pr-4',
                 ]"
               >
-                <span
-                  :class="[
-                    selected ? 'font-medium' : 'font-normal',
-                    'block truncate'
-                  ]"
-                >
+                <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']">
                   {{ option.label }}
                 </span>
                 <span
                   v-if="selected"
-                  class="absolute inset-y-0 left-0 flex items-center pl-3 text-primary-600 dark:text-primary-400"
+                  class="absolute inset-y-0 left-0 flex items-center pl-3 text-blue-600 dark:text-blue-400"
                 >
                   <font-awesome-icon icon="check" class="h-5 w-5" aria-hidden="true" />
                 </span>
@@ -60,39 +57,35 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-import {
-  Listbox,
-  ListboxButton,
-  ListboxOptions,
-  ListboxOption,
-} from '@headlessui/vue';
+import { computed } from 'vue'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
 
 interface Option {
-  value: string;
-  label: string;
+  value: string
+  label: string
 }
 
 interface Props {
-  options: Option[];
-  placeholder?: string;
-  width?: string;
+  options: Option[]
+  placeholder?: string
+  width?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   placeholder: 'Select...',
   width: 'w-48',
-});
+})
 
-const modelValue = defineModel<string | null>();
+const modelValue = defineModel<string | null>()
 
-const buttonClass = computed(() => 
-  `relative ${props.width} cursor-pointer rounded-md bg-white dark:bg-dark-elements py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-400 text-sm`
-);
+const buttonClass = computed(
+  () =>
+    `relative ${props.width} cursor-pointer rounded-md bg-white dark:bg-primary py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-0 text-sm`,
+)
 
 const displayValue = computed(() => {
-  if (!modelValue.value) return props.placeholder;
-  const option = props.options.find(opt => opt.value === modelValue.value);
-  return option?.label || props.placeholder;
-});
+  if (!modelValue.value) return props.placeholder
+  const option = props.options.find((opt) => opt.value === modelValue.value)
+  return option?.label || props.placeholder
+})
 </script>
