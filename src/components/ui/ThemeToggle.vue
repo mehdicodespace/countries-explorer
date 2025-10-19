@@ -1,3 +1,12 @@
+<script setup lang="ts">
+import { storeToRefs } from 'pinia'
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
+const { isDark } = storeToRefs(themeStore)
+const { toggleTheme } = themeStore
+</script>
+
 <template>
   <button
     @click="toggleTheme"
@@ -15,12 +24,3 @@
     </span>
   </button>
 </template>
-
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useThemeStore } from '@/stores/theme'
-
-const themeStore = useThemeStore()
-const { isDark } = storeToRefs(themeStore)
-const { toggleTheme } = themeStore
-</script>

@@ -1,3 +1,55 @@
+<script setup lang="ts">
+import { ref, onMounted, computed } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+import { useQuery } from '@tanstack/vue-query'
+import { countriesApi } from '@/api/countries'
+import type { CountryCard } from '@/types/country'
+import BackButton from '@/components/ui/BackButton.vue'
+import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
+
+interface Props {
+  code: string
+}
+
+const props = defineProps<Props>()
+const router = useRouter()
+const route = useRoute()
+
+const countryCode = computed(() => route.params.code as string)
+
+const {
+  data: country,
+  isLoading,
+  error,
+  refetch,
+} = useQuery({
+  queryKey: ['country', countryCode],
+  queryFn: () => countriesApi.getByCode(countryCode.value),
+  enabled: computed(() => !!countryCode.value),
+})
+
+const { data: borderCountries = [], isLoading: isLoadingBorders } = useQuery({
+  queryKey: ['border-countries', countryCode],
+  queryFn: async () => {
+    if (!country.value?.borders || country.value.borders.length === 0) {
+      return []
+    }
+    return countriesApi.getByCodes(country.value.borders)
+  },
+  enabled: computed(() => !!(country.value?.borders && country.value.borders.length > 0)),
+  staleTime: 0,
+})
+
+const formatNumber = (num: number): string => {
+  return new Intl.NumberFormat('en-US').format(num)
+}
+
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  img.src = '/placeholder-flag.svg'
+}
+</script>
+
 <template>
   <div>
     <!-- Back Button -->
@@ -6,38 +58,14 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="isLoading" class="flex items-center justify-center py-12">
-      <div class="text-neutral-500 dark:text-neutral-400">
-        <svg class="animate-spin h-8 w-8 mx-auto mb-4" fill="none" viewBox="0 0 24 24">
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-        <p class="text-center">Loading country details...</p>
-      </div>
+    <div v-if="isLoading" class="py-12">
+      <LoadingSpinner size="lg" text="Loading country details..." />
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <div class="text-red-500 dark:text-red-400 mb-4">
-        <svg class="h-16 w-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-          />
-        </svg>
+        <font-awesome-icon icon="exclamation-triangle" class="text-6xl mx-auto mb-6 text-red-400" />
         <h3 class="text-xl font-semibold mb-2">Failed to load country</h3>
         <p class="text-neutral-500 dark:text-neutral-400 mb-4">{{ error.message }}</p>
         <button
@@ -132,21 +160,15 @@
             </span>
             <div class="flex flex-wrap gap-2">
               <!-- Loading state for border countries -->
-              <div
-                v-if="isLoadingBorders"
-                class="flex items-center gap-2 text-neutral-500 dark:text-neutral-400 text-sm"
-              >
-                <div
-                  class="animate-spin rounded-full h-4 w-4 border-b-2 border-neutral-500 dark:border-neutral-400"
-                ></div>
-                Loading border countries...
+              <div v-if="isLoadingBorders" class="text-sm">
+                <LoadingSpinner size="sm" text="Loading border countries..." :centered="false" />
               </div>
               <!-- Border country buttons -->
               <template v-else-if="borderCountries && borderCountries.length > 0">
                 <button
                   v-for="borderCountry in borderCountries"
                   :key="borderCountry.cca3"
-                  @click="navigateToCountry(borderCountry.cca3)"
+                  @click="router.push(`/country/${borderCountry.cca3}`)"
                   class="px-4 py-2 bg-white dark:bg-primary text-neutral-900 dark:text-white rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-0 text-sm cursor-pointer"
                 >
                   {{ borderCountry.name }}
@@ -165,16 +187,12 @@
     <!-- No Country Data -->
     <div v-else class="text-center py-12">
       <div class="text-neutral-500 dark:text-neutral-400">
-        <svg class="h-16 w-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-        <h3 class="text-xl font-semibold mb-2">Country data not available</h3>
-        <p class="mb-4">The requested country information could not be loaded.</p>
+        <font-awesome-icon
+          icon="search"
+          class="text-6xl mx-auto mb-6 text-neutral-300 dark:text-neutral-600"
+        />
+        <h3 class="text-2xl font-semibold mb-2">Country data not available</h3>
+        <p class="text-lg mb-4">The requested country information could not be loaded.</p>
         <button
           @click="() => refetch()"
           class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200"
@@ -185,64 +203,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useQuery } from '@tanstack/vue-query'
-import { countriesApi } from '@/api/countries'
-import type { CountryCard } from '@/types/country'
-import BackButton from '@/components/ui/BackButton.vue'
-
-interface Props {
-  code: string
-}
-
-const props = defineProps<Props>()
-const router = useRouter()
-const route = useRoute()
-
-// Get the country code from route params (reactive)
-const countryCode = computed(() => route.params.code as string)
-
-// Fetch country details
-const {
-  data: country,
-  isLoading,
-  error,
-  refetch,
-} = useQuery({
-  queryKey: ['country', countryCode],
-  queryFn: () => countriesApi.getByCode(countryCode.value),
-  enabled: computed(() => !!countryCode.value),
-})
-
-// Fetch border countries
-const { data: borderCountries = [], isLoading: isLoadingBorders } = useQuery({
-  queryKey: ['border-countries', countryCode],
-  queryFn: async () => {
-    if (!country.value?.borders || country.value.borders.length === 0) {
-      return []
-    }
-    return countriesApi.getByCodes(country.value.borders)
-  },
-  enabled: computed(() => !!(country.value?.borders && country.value.borders.length > 0)),
-  staleTime: 0, // Always refetch border countries when country changes
-})
-
-// Format large numbers with commas
-const formatNumber = (num: number): string => {
-  return new Intl.NumberFormat('en-US').format(num)
-}
-
-// Navigate to border country
-const navigateToCountry = (code: string) => {
-  router.push(`/country/${code}`)
-}
-
-// Handle image loading errors
-const handleImageError = (event: Event) => {
-  const img = event.target as HTMLImageElement
-  img.src = '/placeholder-flag.svg'
-}
-</script>

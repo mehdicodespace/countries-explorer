@@ -1,3 +1,30 @@
+<script setup lang="ts">
+interface Props {
+  hasError?: boolean
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  hasError: false,
+})
+
+const modelValue = defineModel<string>()
+
+const emit = defineEmits<{
+  search: [value: string]
+}>()
+
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement
+  modelValue.value = target.value
+  emit('search', target.value)
+}
+
+const clearSearch = () => {
+  modelValue.value = ''
+  emit('search', '')
+}
+</script>
+
 <template>
   <div class="relative w-full sm:w-96 lg:w-[550px]">
     <!-- Search Icon -->
@@ -28,27 +55,3 @@
     </button>
   </div>
 </template>
-
-<script setup lang="ts">
-interface Props {
-  hasError?: boolean
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  hasError: false,
-})
-
-// Use defineModel for v-model
-const modelValue = defineModel<string>()
-
-// Handle input changes immediately
-const handleInput = (event: Event) => {
-  const target = event.target as HTMLInputElement
-  modelValue.value = target.value
-}
-
-// Clear search
-const clearSearch = () => {
-  modelValue.value = ''
-}
-</script>

@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import ThemeToggle from '@/components/ui/ThemeToggle.vue'
+</script>
+
 <template>
   <header class="bg-white dark:bg-primary shadow-md">
     <div class="w-[92%] mx-auto px-4 py-4 sm:px-6 sm:py-6">
@@ -10,7 +14,3 @@
     </div>
   </header>
 </template>
-
-<script setup lang="ts">
-import ThemeToggle from '@/components/ui/ThemeToggle.vue'
-</script>

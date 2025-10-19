@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { storeToRefs } from 'pinia'
+import { useCountriesStore } from '@/stores/countries'
+import type { CountryCard as CountryCardType } from '@/types/country'
+import CountryCard from '@/components/country/CountryCard.vue'
+import CountryFilters from '@/components/country/CountryFilters.vue'
+import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
+
+const router = useRouter()
+const countriesStore = useCountriesStore()
+
+const { countries, isLoading, error, hasCountries } = storeToRefs(countriesStore)
+</script>
+
 <template>
   <div>
     <!-- Search and Filter Controls -->
@@ -6,22 +21,14 @@
     </div>
 
     <!-- Loading State -->
-    <div v-if="isLoading" class="flex justify-center items-center py-12">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      <p class="ml-4 text-neutral-500 dark:text-neutral-400">Loading countries...</p>
+    <div v-if="isLoading" class="py-12">
+      <LoadingSpinner size="lg" text="Loading countries..." />
     </div>
 
     <!-- Error State -->
     <div v-else-if="error" class="text-center py-12">
       <div class="text-red-500 dark:text-red-400 mb-4">
-        <svg class="h-16 w-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"
-          />
-        </svg>
+        <font-awesome-icon icon="exclamation-triangle" class="text-6xl mx-auto mb-6 text-red-400" />
         <h3 class="text-xl font-semibold mb-2">Failed to load countries</h3>
         <p class="text-neutral-500 dark:text-neutral-400 mb-4">{{ error.message }}</p>
         <button
@@ -42,44 +49,20 @@
         v-for="country in countries"
         :key="country.cca3"
         :country="country"
-        @click="handleCountryClick"
+        @click="(country) => router.push(`/country/${country.cca3}`)"
       />
     </div>
 
     <!-- Empty State - Only show when loading is finished and no countries -->
     <div v-else-if="!isLoading && !error && !hasCountries" class="text-center py-12">
       <div class="text-neutral-500 dark:text-neutral-400">
-        <svg class="h-16 w-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-          />
-        </svg>
-        <h3 class="text-xl font-semibold mb-2">No countries found</h3>
-        <p class="mb-4">No countries available at the moment.</p>
+        <font-awesome-icon
+          icon="search"
+          class="text-6xl mx-auto mb-6 text-neutral-70 dark:text-neutral-300"
+        />
+        <h3 class="text-2xl font-semibold mb-2">No countries found</h3>
+        <p class="text-lg mb-4">No countries available at the moment.</p>
       </div>
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { useRouter } from 'vue-router'
-import { storeToRefs } from 'pinia'
-import { useCountriesStore } from '@/stores/countries'
-import type { CountryCard as CountryCardType } from '@/types/country'
-import CountryCard from '@/components/country/CountryCard.vue'
-import CountryFilters from '@/components/country/CountryFilters.vue'
-
-const router = useRouter()
-const countriesStore = useCountriesStore()
-
-// Get reactive store data
-const { countries, isLoading, error, hasCountries } = storeToRefs(countriesStore)
-
-// Handle country card click
-const handleCountryClick = (country: CountryCardType) => {
-  router.push(`/country/${country.cca3}`)
-}
-</script>

@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
+
+interface Option {
+  value: string
+  label: string
+}
+
+interface Props {
+  options: Option[]
+  placeholder?: string
+  width?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  placeholder: 'Select...',
+  width: 'w-48',
+})
+
+const modelValue = defineModel<string | null>()
+
+const buttonClass = computed(
+  () =>
+    `relative ${props.width} cursor-pointer rounded-md bg-white dark:bg-primary py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-0 text-sm`,
+)
+
+const displayValue = computed(() => {
+  if (!modelValue.value) return props.placeholder
+  const option = props.options.find((opt) => opt.value === modelValue.value)
+  return option?.label || props.placeholder
+})
+</script>
+
 <template>
   <div class="relative">
     <Listbox v-model="modelValue">
@@ -38,7 +72,7 @@
                   'relative cursor-pointer select-none py-2 pl-10 pr-4',
                 ]"
               >
-                <span :class="[selected ? 'font-medium' : 'font-normal', 'block truncate']">
+                <span :class="[selected ? 'font-medium' : 'font-normal', 'block']">
                   {{ option.label }}
                 </span>
                 <span
@@ -55,37 +89,3 @@
     </Listbox>
   </div>
 </template>
-
-<script setup lang="ts">
-import { computed } from 'vue'
-import { Listbox, ListboxButton, ListboxOptions, ListboxOption } from '@headlessui/vue'
-
-interface Option {
-  value: string
-  label: string
-}
-
-interface Props {
-  options: Option[]
-  placeholder?: string
-  width?: string
-}
-
-const props = withDefaults(defineProps<Props>(), {
-  placeholder: 'Select...',
-  width: 'w-48',
-})
-
-const modelValue = defineModel<string | null>()
-
-const buttonClass = computed(
-  () =>
-    `relative ${props.width} cursor-pointer rounded-md bg-white dark:bg-primary py-3 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-600 focus:outline-none focus:ring-0 text-sm`,
-)
-
-const displayValue = computed(() => {
-  if (!modelValue.value) return props.placeholder
-  const option = props.options.find((opt) => opt.value === modelValue.value)
-  return option?.label || props.placeholder
-})
-</script>

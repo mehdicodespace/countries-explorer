@@ -1,11 +1,9 @@
 import type { Country, CountryCard, CountryDetail } from '@/types/country'
 import { createApiClient } from './config'
 
-// Create API client
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://restcountries.com/v3.1'
 export const apiClient = createApiClient(API_BASE_URL)
 
-// Transform country data for home page
 const transformCountry = (country: Country): CountryCard => ({
   name: country.name.common,
   flag: country.flags.svg,
@@ -15,24 +13,18 @@ const transformCountry = (country: Country): CountryCard => ({
   cca3: country.cca3,
 })
 
-// Transform country data for detail page
 const transformCountryDetail = (country: Country): CountryDetail => {
-  // Get native name (first available native name)
   const nativeName = country.name.nativeName
     ? Object.values(country.name.nativeName)[0]?.common || country.name.common
     : country.name.common
 
-  // Format currencies
   const currencies = country.currencies
     ? Object.values(country.currencies)
         .map((c) => c.name)
         .join(', ')
     : 'N/A'
 
-  // Format languages
   const languages = country.languages ? Object.values(country.languages).join(', ') : 'N/A'
-
-  // Format top level domain
   const topLevelDomain = country.tld?.[0] || 'N/A'
 
   return {
@@ -51,9 +43,7 @@ const transformCountryDetail = (country: Country): CountryDetail => {
   }
 }
 
-// API functions
 export const countriesApi = {
-  // Fetch all countries
   getAll: async (): Promise<CountryCard[]> => {
     const response = await apiClient.get<Country[]>(
       '/all?fields=name,flags,population,region,capital,cca3',
@@ -61,7 +51,6 @@ export const countriesApi = {
     return response.data.map(transformCountry)
   },
 
-  // Fetch single country by code
   getByCode: async (code: string): Promise<CountryDetail> => {
     try {
       const response = await apiClient.get<Country>(
@@ -84,7 +73,6 @@ export const countriesApi = {
     }
   },
 
-  // Fetch countries by codes (for border countries)
   getByCodes: async (codes: string[]): Promise<CountryCard[]> => {
     const codesString = codes.join(',')
     const response = await apiClient.get<Country[]>(

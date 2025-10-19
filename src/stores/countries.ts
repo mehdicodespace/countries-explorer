@@ -7,34 +7,27 @@ import { countriesApi } from '@/api/countries'
 import type { Region, CountryCard, SortBy, SortOrder } from '@/types/country'
 
 export const useCountriesStore = defineStore('countries', () => {
-  // Router for URL synchronization
   const route = useRoute()
   const router = useRouter()
 
-  // Filter state
   const searchQuery = ref('')
   const selectedRegion = ref<Region>('All')
   const sortBy = ref<SortBy | null>(null)
   const sortOrder = ref<SortOrder>('asc')
 
-  // Initialize filters from URL query parameters
   const initializeFiltersFromURL = () => {
     const query = route.query
 
-    // Initialize search query
     searchQuery.value = (query.search as string) || ''
 
-    // Initialize region (validate against allowed regions)
     const region = query.region as string
     const validRegions: Region[] = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
     selectedRegion.value = validRegions.includes(region as Region) ? (region as Region) : 'All'
 
-    // Initialize sort by (validate against allowed values)
     const sortByParam = query.sortBy as string
     const validSortBy: (SortBy | null)[] = ['name', 'population', null]
     sortBy.value = validSortBy.includes(sortByParam as SortBy) ? (sortByParam as SortBy) : null
 
-    // Initialize sort order (validate against allowed values)
     const sortOrderParam = query.sortOrder as string
     const validSortOrder: SortOrder[] = ['asc', 'desc']
     sortOrder.value = validSortOrder.includes(sortOrderParam as SortOrder)
@@ -42,10 +35,8 @@ export const useCountriesStore = defineStore('countries', () => {
       : 'asc'
   }
 
-  // Initialize filters from URL on store creation
   initializeFiltersFromURL()
 
-  // Fetch all countries once
   const {
     data: allCountries,
     isLoading,
@@ -54,35 +45,29 @@ export const useCountriesStore = defineStore('countries', () => {
   } = useQuery({
     queryKey: ['countries'],
     queryFn: countriesApi.getAll,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-    retry: 3, // Retry failed requests
-    retryDelay: 1000, // 1 second between retries
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    retry: 3,
+    retryDelay: 1000,
   })
 
-  // Client-side filtering with fuzzy search
   const countries = computed(() => {
     if (!allCountries.value) return []
 
     let filtered = allCountries.value
 
-    // Filter by region first
     if (selectedRegion.value !== 'All') {
       filtered = filtered.filter((country) => country.region === selectedRegion.value)
     }
 
-    // Fuzzy search for country names (bonus point requirement)
     if (searchQuery.value.trim()) {
       const query = searchQuery.value.trim().toLowerCase()
 
-      // First try exact substring match for better performance
       let exactMatches = filtered.filter((country) => country.name.toLowerCase().includes(query))
 
-      // If we have exact matches, use them. Otherwise, use fuzzy search for typos
       if (exactMatches.length > 0) {
         filtered = exactMatches
       } else {
-        // Use fuzzy search for typo tolerance
         const fuse = new Fuse(filtered, {
           keys: ['name'],
           threshold: 0.45,
@@ -96,7 +81,6 @@ export const useCountriesStore = defineStore('countries', () => {
       }
     }
 
-    // Sort the filtered results only if sortBy is selected
     if (sortBy.value) {
       const sorted = [...filtered].sort((a, b) => {
         let comparison = 0
@@ -159,11 +143,9 @@ export const useCountriesStore = defineStore('countries', () => {
       query.sortOrder = sortOrder.value
     }
 
-    // Update URL without triggering navigation
     router.replace({ query })
   }
 
-  // Watch for filter changes and update URL
   watch(
     [searchQuery, selectedRegion, sortBy, sortOrder],
     () => {
@@ -173,7 +155,6 @@ export const useCountriesStore = defineStore('countries', () => {
   )
 
   return {
-    // State
     countries,
     searchQuery,
     selectedRegion,
@@ -182,8 +163,6 @@ export const useCountriesStore = defineStore('countries', () => {
     isLoading,
     error,
     hasCountries,
-
-    // Actions
     updateSearch,
     updateRegion,
     updateSortBy,

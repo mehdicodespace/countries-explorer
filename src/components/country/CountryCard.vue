@@ -1,7 +1,31 @@
+<script setup lang="ts">
+import type { CountryCard as CountryCardType } from '@/types/country'
+
+interface Props {
+  country: CountryCardType
+}
+
+interface Emits {
+  (e: 'click', country: CountryCardType): void
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits<Emits>()
+
+const formatNumber = (num: number): string => {
+  return new Intl.NumberFormat('en-US').format(num)
+}
+
+const handleImageError = (event: Event) => {
+  const img = event.target as HTMLImageElement
+  img.src = '/placeholder-flag.svg'
+}
+</script>
+
 <template>
   <div
     class="bg-white dark:bg-primary rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-    @click="handleClick"
+    @click="emit('click', country)"
   >
     <!-- Flag Image -->
     <div class="aspect-[4/3] overflow-hidden">
@@ -41,34 +65,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { CountryCard as CountryCardType } from '@/types/country'
-
-interface Props {
-  country: CountryCardType
-}
-
-interface Emits {
-  (e: 'click', country: CountryCardType): void
-}
-
-const props = defineProps<Props>()
-const emit = defineEmits<Emits>()
-
-// Format large numbers with commas
-const formatNumber = (num: number): string => {
-  return new Intl.NumberFormat('en-US').format(num)
-}
-
-// Handle card click
-const handleClick = () => {
-  emit('click', props.country)
-}
-
-// Handle image loading errors
-const handleImageError = (event: Event) => {
-  const img = event.target as HTMLImageElement
-  img.src = '/placeholder-flag.svg' // Fallback image
-}
-</script>

@@ -1,4 +1,3 @@
-// Country data interfaces based on REST Countries API v3.1
 export interface Country {
   name: {
     common: string
@@ -19,7 +18,7 @@ export interface Country {
   region: string
   subregion?: string
   capital: string[]
-  cca3: string // Country code for border countries
+  cca3: string
   cca2?: string
   currencies?: {
     [key: string]: {
@@ -34,7 +33,6 @@ export interface Country {
   borders?: string[]
 }
 
-// Simplified country interface for the home page
 export interface CountryCard {
   name: string
   flag: string
@@ -44,7 +42,6 @@ export interface CountryCard {
   cca3: string
 }
 
-// Detailed country interface for the detail page
 export interface CountryDetail {
   name: string
   nativeName: string
@@ -60,21 +57,17 @@ export interface CountryDetail {
   cca3: string
 }
 
-// API response types
 export interface CountriesResponse extends Array<Country> {}
 
-// Filter and search types
 export interface CountryFilters {
   search: string
   region: string
 }
 
-// Regions for the filter dropdown
 export const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'] as const
 
 export type Region = (typeof REGIONS)[number]
 
-// Sort options for countries
 export type SortBy = 'name' | 'population'
 export type SortOrder = 'asc' | 'desc'
 

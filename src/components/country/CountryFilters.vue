@@ -1,3 +1,54 @@
+<script setup lang="ts">
+import { ref, computed, watch } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useCountriesStore } from '@/stores/countries'
+import type { Region, SortBy, SortOrder } from '@/types/country'
+import { SORT_BY_OPTIONS, SORT_ORDER_OPTIONS, REGIONS } from '@/types/country'
+import SearchInput from '@/components/ui/forms/SearchInput.vue'
+import DropdownInput from '@/components/ui/forms/DropdownInput.vue'
+
+const countriesStore = useCountriesStore()
+
+const regionDropdownRef = ref()
+const sortByDropdownRef = ref()
+const sortOrderDropdownRef = ref()
+
+const { searchQuery, selectedRegion, sortBy, sortOrder, error } = storeToRefs(countriesStore)
+
+const { updateSearch, updateRegion, updateSortBy, updateSortOrder } = countriesStore
+
+const regionOptions = REGIONS.map((region) => ({
+  value: region,
+  label: region === 'All' ? 'All Regions' : region,
+}))
+
+const sortByOptions = SORT_BY_OPTIONS.map((option) => ({
+  value: option.value,
+  label: option.label,
+}))
+
+const sortOrderOptions = SORT_ORDER_OPTIONS.map((option) => ({
+  value: option.value,
+  label: option.label,
+}))
+
+const handleSearch = (query: string) => {
+  updateSearch(query)
+}
+
+watch(selectedRegion, (newRegion) => {
+  updateRegion(newRegion)
+})
+
+watch(sortBy, (newSortBy) => {
+  updateSortBy(newSortBy)
+})
+
+watch(sortOrder, (newSortOrder) => {
+  updateSortOrder(newSortOrder)
+})
+</script>
+
 <template>
   <div class="flex flex-col lg:flex-row lg:flex-wrap lg:justify-between lg:items-end gap-6">
     <!-- Search Input -->
@@ -75,7 +126,7 @@
               v-model="sortOrder"
               :options="sortOrderOptions"
               placeholder="Order..."
-              width="w-full sm:w-32"
+              width="w-full sm:w-36"
             />
           </div>
         </div>
@@ -83,61 +134,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { storeToRefs } from 'pinia'
-import { useCountriesStore } from '@/stores/countries'
-import type { Region, SortBy, SortOrder } from '@/types/country'
-import { SORT_BY_OPTIONS, SORT_ORDER_OPTIONS, REGIONS } from '@/types/country'
-import SearchInput from '@/components/ui/forms/SearchInput.vue'
-import DropdownInput from '@/components/ui/forms/DropdownInput.vue'
-
-// Store
-const countriesStore = useCountriesStore()
-
-// Refs
-const regionDropdownRef = ref()
-const sortByDropdownRef = ref()
-const sortOrderDropdownRef = ref()
-
-// Store data
-const { searchQuery, selectedRegion, sortBy, sortOrder, error } = storeToRefs(countriesStore)
-
-// Store actions
-const { updateSearch, updateRegion, updateSortBy, updateSortOrder } = countriesStore
-
-// Options
-const regionOptions = REGIONS.map((region) => ({
-  value: region,
-  label: region === 'All' ? 'All Regions' : region,
-}))
-
-const sortByOptions = SORT_BY_OPTIONS.map((option) => ({
-  value: option.value,
-  label: option.label,
-}))
-
-const sortOrderOptions = SORT_ORDER_OPTIONS.map((option) => ({
-  value: option.value,
-  label: option.label,
-}))
-
-// Handlers
-const handleSearch = (query: string) => {
-  updateSearch(query)
-}
-
-// Watch for dropdown changes
-watch(selectedRegion, (newRegion) => {
-  updateRegion(newRegion)
-})
-
-watch(sortBy, (newSortBy) => {
-  updateSortBy(newSortBy)
-})
-
-watch(sortOrder, (newSortOrder) => {
-  updateSortOrder(newSortOrder)
-})
-</script>
