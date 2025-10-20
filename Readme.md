@@ -1,6 +1,6 @@
 # 🌍 REST Countries API - Vue.js Challenge
 
-A modern, responsive Vue.js application for exploring countries around the world with advanced filtering, search capabilities, and dynamic theming.
+> **📝 Documentation Disclaimer**: This README documentation has been enhanced with AI assistance solely for improved readability, organization, and professional presentation.
 
 ## 🚀 Live Demo
 
