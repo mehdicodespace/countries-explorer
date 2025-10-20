@@ -6,11 +6,13 @@ export const createApiClient = (baseURL: string, timeout = 10000) => {
     timeout,
   })
 
+  // Log error in development for debugging
+  // In production, errors are handled by the components itself (just for interceptor usage)
   if (import.meta.env.DEV) {
     client.interceptors.response.use(
       (response) => response,
       (error) => {
-        console.error(`API Error [${baseURL}]:`, error.response?.data || error.message)
+        console.log(error)
         return Promise.reject(error)
       },
     )

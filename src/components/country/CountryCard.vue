@@ -9,7 +9,7 @@ interface Emits {
   (e: 'click', country: CountryCardType): void
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const emit = defineEmits<Emits>()
 
 const formatNumber = (num: number): string => {

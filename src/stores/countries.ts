@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { useRoute, useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
 import { countriesApi } from '@/api/countries'
-import type { Region, CountryCard, SortBy, SortOrder } from '@/types/country'
+import type { Region, SortBy, SortOrder } from '@/types/country'
 
 export const useCountriesStore = defineStore('countries', () => {
   const route = useRoute()
@@ -63,7 +63,7 @@ export const useCountriesStore = defineStore('countries', () => {
     if (searchQuery.value.trim()) {
       const query = searchQuery.value.trim().toLowerCase()
 
-      let exactMatches = filtered.filter((country) => country.name.toLowerCase().includes(query))
+      const exactMatches = filtered.filter((country) => country.name.toLowerCase().includes(query))
 
       if (exactMatches.length > 0) {
         filtered = exactMatches

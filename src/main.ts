@@ -16,7 +16,6 @@ import {
   faArrowsUpDown,
   faSpinner,
   faExclamationTriangle,
-  faSearch as faSearchIcon,
 } from '@fortawesome/free-solid-svg-icons'
 import './assets/tailwind.css'
 import App from './App.vue'
@@ -36,7 +35,6 @@ library.add(
   faArrowsUpDown,
   faSpinner,
   faExclamationTriangle,
-  faSearchIcon,
 )
 
 const app = createApp(App)

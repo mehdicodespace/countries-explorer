@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCountriesStore } from '@/stores/countries'
-import type { Region, SortBy, SortOrder } from '@/types/country'
 import { SORT_BY_OPTIONS, SORT_ORDER_OPTIONS, REGIONS } from '@/types/country'
 import SearchInput from '@/components/ui/forms/SearchInput.vue'
 import DropdownInput from '@/components/ui/forms/DropdownInput.vue'

@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue'
+import { computed, watch } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useQuery } from '@tanstack/vue-query'
 import { countriesApi } from '@/api/countries'
 import { useMetadata } from '@/composables/useMetadata'
-import type { CountryCard } from '@/types/country'
 import BackButton from '@/components/ui/BackButton.vue'
 import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 
@@ -12,7 +11,7 @@ interface Props {
   code: string
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 const router = useRouter()
 const route = useRoute()
 const { updateMetadata } = useMetadata()
@@ -58,7 +57,7 @@ watch(
     if (newCountry?.name) {
       const title = `${newCountry.name} - REST Countries API`
       const description = `Learn about ${newCountry.name}. Population: ${formatNumber(newCountry.population)}, Region: ${newCountry.region}, Capital: ${newCountry.capital}. View flag, map, and detailed country information.`
-      const keywords = `${newCountry.name}, ${newCountry.capital}, ${newCountry.region}, population, flag, map, country information, ${Array.isArray(newCountry.currencies) ? newCountry.currencies.map((c: any) => c.name).join(', ') : ''}, ${Array.isArray(newCountry.languages) ? newCountry.languages.map((l: any) => l.name).join(', ') : ''}`
+      const keywords = `${newCountry.name}, ${newCountry.capital}, ${newCountry.region}, population, flag, map, country information, ${newCountry.currencies}, ${newCountry.languages}`
 
       updateMetadata(title, description, keywords)
     }

@@ -57,7 +57,7 @@ export interface CountryDetail {
   cca3: string
 }
 
-export interface CountriesResponse extends Array<Country> {}
+export type CountriesResponse = Country[]
 
 export interface CountryFilters {
   search: string

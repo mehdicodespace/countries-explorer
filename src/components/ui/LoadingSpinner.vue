@@ -5,7 +5,7 @@ interface Props {
   centered?: boolean
 }
 
-const props = withDefaults(defineProps<Props>(), {
+withDefaults(defineProps<Props>(), {
   size: 'md',
   text: '',
   centered: true,

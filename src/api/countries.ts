@@ -68,7 +68,6 @@ export const countriesApi = {
 
       return transformCountryDetail(country)
     } catch (error) {
-      console.error('Error fetching country:', error)
       throw error
     }
   },
