@@ -20,7 +20,7 @@ const { toggleTheme } = themeStore
     <font-awesome-icon v-else icon="sun" class="h-5 w-5" />
 
     <span class="font-semibold text-sm">
-      {{ isDark ? 'Dark Mode' : 'Light Mode' }}
+      {{ isDark ? 'Light Mode' : 'Dark Mode' }}
     </span>
   </button>
 </template>

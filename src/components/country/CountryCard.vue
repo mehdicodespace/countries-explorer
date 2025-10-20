@@ -47,19 +47,19 @@ const handleImageError = (event: Event) => {
       <div class="space-y-1 text-sm">
         <div class="flex items-center">
           <span class="font-semibold text-neutral-900 dark:text-white mr-2">Population:</span>
-          <span class="text-neutral-500 dark:text-neutral-300">{{
+          <span class="text-neutral-700 dark:text-neutral-300">{{
             formatNumber(country.population)
           }}</span>
         </div>
 
         <div class="flex items-center">
           <span class="font-semibold text-neutral-900 dark:text-white mr-2">Region:</span>
-          <span class="text-neutral-500 dark:text-neutral-300">{{ country.region }}</span>
+          <span class="text-neutral-700 dark:text-neutral-300">{{ country.region }}</span>
         </div>
 
         <div class="flex items-center">
           <span class="font-semibold text-neutral-900 dark:text-white mr-2">Capital:</span>
-          <span class="text-neutral-500 dark:text-neutral-300">{{ country.capital }}</span>
+          <span class="text-neutral-700 dark:text-neutral-300">{{ country.capital }}</span>
         </div>
       </div>
     </div>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { storeToRefs } from 'pinia'
 import { useCountriesStore } from '@/stores/countries'
+import { useMetadata } from '@/composables/useMetadata'
 import type { CountryCard as CountryCardType } from '@/types/country'
 import CountryCard from '@/components/country/CountryCard.vue'
 import CountryFilters from '@/components/country/CountryFilters.vue'
@@ -9,8 +11,18 @@ import LoadingSpinner from '@/components/ui/LoadingSpinner.vue'
 
 const router = useRouter()
 const countriesStore = useCountriesStore()
+const { updateMetadata } = useMetadata()
 
 const { countries, isLoading, error, hasCountries } = storeToRefs(countriesStore)
+
+// Set page metadata when component mounts
+onMounted(() => {
+  updateMetadata(
+    'REST Countries API - Home',
+    'Discover countries around the world. Search, filter, and explore detailed information about 195+ countries including population, region, capital, and more.',
+    'countries, world map, country search, population, geography, flags, capitals, regions, world statistics, country data',
+  )
+})
 </script>
 
 <template>

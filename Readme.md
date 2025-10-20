@@ -1,49 +1,30 @@
-# REST Countries API Challenge
+# 🌍 REST Countries API - Vue.js Challenge
 
-A modern Vue 3 application that displays country information from the REST Countries API with advanced search and filtering capabilities.
+A modern, responsive Vue.js application for exploring countries around the world with advanced filtering, search capabilities, and dynamic theming.
 
 ## 🚀 Live Demo
 
-[View Live Demo](https://your-demo-url.com) <!-- Replace with your actual deployment URL -->
-
-## ✨ Features
-
-- **🌍 Country Browser** - Browse all countries with detailed information
-- **🔍 Smart Search** - Instant search with exact matching and fuzzy fallback for typos (e.g., "Grmany" finds "Germany")
-- **🌎 Region Filtering** - Filter countries by region (Africa, Americas, Asia, Europe, Oceania)
-- **📊 Advanced Sorting** - Optional sorting with separate dropdowns for sort field (Name/Population) and sort order (Ascending/Descending)
-- **🌙 Dark/Light Mode** - Toggle between light and dark themes
-- **📱 Responsive Design** - Optimized for mobile and desktop
-- **🎨 Clear UI Labels** - Intuitive labels with icons for all filter controls (clickable for accessibility)
-- **♻️ Reusable Components** - DRY principle with shared form components (SearchInput, DropdownInput)
-- **🔗 URL Synchronization** - Filters stored in URL query strings for sharing and bookmarking
-- **⚡ Performance** - Lazy loading for images and efficient client-side filtering
-- **🎯 Type Safety** - Full TypeScript support throughout
+**[View Live Demo](https://mehdicodecom.github.io/vue3-countries-challenge/)**  
+**URL**: https://mehdicodecom.github.io/vue3-countries-challenge/
 
 ## 🛠️ Tech Stack
 
-- **Vue 3** - Composition API with TypeScript
-- **Pinia** - State management
-- **Vue Query** - Data fetching and caching
-- **Tailwind CSS** - Utility-first styling
-- **Headless UI** - Accessible components
-- **Font Awesome** - Professional icon library
-- **Fuse.js** - Fuzzy search implementation
-- **Axios** - HTTP client
-- **Vite** - Build tool
+- **Vue 3.5.22** - Composition API with TypeScript
+- **TypeScript 5.9.0** - Type-safe development
+- **Tailwind CSS 4.1.14** - Latest version with enhanced performance
+- **Vite 7.1.7** - Lightning-fast build tool
+- **Pinia 3.0.3** - Modern state management
+- **Vue Router 4.5.1** - Client-side routing
+- **TanStack Vue Query 5.90.5** - Data fetching and caching
+- **Axios 1.12.2** - HTTP client
+- **Font Awesome 7.1.0** - Icon library
+- **Headless UI Vue 1.7.23** - Accessible UI components _(used limitedly as project wasn't large, but included as mentioned in job requirements)_
 
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js 18+ 
-- npm or yarn
-
-### Installation
+## 📦 Installation & Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/vue3-countries-challenge.git
+git clone https://github.com/mehdicodecom/vue3-countries-challenge.git
 
 # Navigate to project directory
 cd vue3-countries-challenge
@@ -53,104 +34,6 @@ npm install
 
 # Start development server
 npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) to view the application.
-
-## 📁 Project Structure
-
-```
-src/
-├── api/                 # API layer
-│   ├── config.ts       # Axios configuration
-│   └── countries.ts    # Countries API functions
-├── components/         # Vue components
-│   ├── country/        # Country-specific components
-│   └── ui/            # Reusable UI components
-│       ├── forms/     # Form input components
-│       └── ...        # Other UI components
-├── stores/            # Pinia stores
-│   ├── countries.ts   # Countries state management
-│   └── theme.ts       # Theme state management
-├── types/             # TypeScript type definitions
-├── views/             # Page components
-└── assets/            # Static assets
-```
-
-## 🎯 Key Features Implementation
-
-### Smart Search with Hybrid Matching
-- Instant exact substring matching for fast, accurate results
-- Falls back to fuzzy search only for typo tolerance
-- Uses Fuse.js with strict threshold (0.4) for typo detection
-- Works immediately on any character input
-- Example: "Iran" finds Iran instantly, "Grmany" finds "Germany" via fuzzy
-- Lightning-fast, precise search experience
-
-### Advanced Filtering & Sorting
-- All countries loaded once and cached
-- Instant search, filter, and sort results
-- No API calls for filtering operations
-- Separate sort field (Name/Population) and sort order (Ascending/Descending) dropdowns
-
-### Lazy Loading
-- Country flags load only when visible
-- Efficient image loading with `loading="lazy"`
-- Optimized performance for large datasets
-
-### Modern Vue 3 Patterns
-- Composition API with `<script setup>`
-- `defineModel()` for clean v-model implementation
-- Reactive state management with Pinia
-- Type-safe development with TypeScript
-
-## 🏆 Bonus Features Implemented
-
-- ✅ **Fuzzy Search** - Typo-tolerant search functionality
-- ✅ **Lazy Loading** - Images and smart list rendering
-- ✅ **4:3 Flag Ratio** - Proper aspect ratio for country flags
-- ✅ **Dark/Light Mode** - Theme switching without external libraries
-
-## 🚀 Deployment
-
-### Build for Production
-
-```bash
-npm run build
-```
-
-### Deploy to Vercel
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel
-```
-
-### Deploy to Netlify
-
-```bash
-# Build the project
-npm run build
-
-# Deploy dist folder to Netlify
-```
-
-## 🧪 Development
-
-### Available Scripts
-
-```bash
-# Development server
-npm run dev
-
-# Type checking
-npm run type-check
-
-# Linting
-npm run lint
 
 # Build for production
 npm run build
@@ -159,29 +42,101 @@ npm run build
 npm run preview
 ```
 
-## 📝 API Integration
+## ✨ Features Implemented
 
-This project integrates with the [REST Countries API v3.1](https://restcountries.com/):
+### 🎯 Core Requirements
 
-- **Base URL**: `https://restcountries.com/v3.1`
-- **Fields**: `name,flags,population,region,capital,cca3`
-- **Caching**: 5-minute stale time with Vue Query
+- ✅ **Country Listing** - Display all countries from REST Countries V2 API
+- ✅ **Search Functionality** - Real-time search with fuzzy matching
+- ✅ **Region Filtering** - Filter countries by continent/region
+- ✅ **Country Details** - Detailed view with comprehensive information
+- ✅ **Client-side Routing** - Seamless navigation between pages
+- ✅ **Border Countries** - Clickable border country links
+
+### 🎨 UI/UX Features
+
+- ✅ **Responsive Design** - Mobile-first approach with desktop optimization
+- ✅ **Dark/Light Theme** - Custom theme switcher without 3rd party libraries
+- ✅ **Dynamic Page Titles** - SEO-optimized titles and meta descriptions
+- ✅ **Loading States** - Elegant loading spinners and error handling
+- ✅ **Image Optimization** - Lazy loading with fallback images
+- ✅ **Accessibility** - ARIA labels and keyboard navigation
+
+### 🔧 Advanced Features
+
+- ✅ **State Management** - Pinia stores for countries and theme
+- ✅ **Data Caching** - TanStack Query for efficient API calls
+- ✅ **Type Safety** - Full TypeScript implementation
+- ✅ **URL Sync** - Filter states synchronized with URL query parameters
+- ✅ **Sort Functionality** - Sort by population and country name
+- ✅ **Fuzzy Search** - Advanced search with Fuse.js integration
+
+## 🏆 Bonus Points Completed
+
+### ✅ Implemented Bonuses
+
+- 🎨 **Custom Theme Toggle** - Built without 3rd party libraries
+- 🔍 **Advanced Search** - Fuzzy search supporting typos (e.g., "Grmany", "Grmny")
+- 📊 **Sort Functionality** - Sort by Population and Country Name
+- 🖼️ **Flag Ratio Optimization** - 4:3 aspect ratio for country flags
+- 🔗 **URL Query Sync** - Filters stored in URL query strings
+- ⚡ **Lazy Loading** - Images and list virtualization for performance
+- 🚀 **CI/CD Pipeline** - Automated deployment with GitHub Actions
+
+### ⏰ Not Implemented (Time Constraints)
+
+- ❌ **Server-Side Rendering** - Not implemented due to project requirements
+- ❌ **Unit Tests** - Comprehensive testing suite needs more development time
+
+#### Reasons for Not Implementing SSR:
+
+- **Time Constraints**: 48-hour deadline with current work commitments (7 AM - 5 PM on-site) limited development time
+- **Technical Architecture**: Pure Vue 3 SSR requires custom server setup and build configuration, while frameworks like Nuxt 3 provide built-in SSR capabilities and would be more suitable for production SSR implementation
+
+> **Note**: Both features could be implemented with additional time allocation. The focus was on delivering a fully functional, production-ready application within the given timeframe.
+
+## 🚀 Deployment
+
+This project is automatically deployed to **GitHub Pages** using GitHub Actions:
+
+- **Trigger**: Push to main branch
+- **Build Process**: Automated npm install → build → deploy
+- **URL**: `https://mehdicodecom.github.io/vue3-countries-challenge/`
+- **HTTPS**: Automatically enabled
+- **CDN**: Global content delivery network
+
+## 🏗️ Project Structure
+
+```
+src/
+├── api/           # API configuration and services
+├── components/    # Reusable Vue components
+├── composables/   # Vue 3 composables (useMetadata, etc.)
+├── stores/        # Pinia state management
+├── types/         # TypeScript type definitions
+├── views/         # Page components
+└── assets/        # Static assets and styles
+```
+
+## 🎯 Key Technical Decisions
+
+- **Tailwind CSS 4.x**: Latest version with improved performance and no config required
+- **TanStack Query**: Modern data fetching with caching and background updates
+- **Headless UI**: Accessible components without styling constraints
+- **TypeScript**: Full type safety across the application
+- **Composition API**: Modern Vue 3 patterns for better code organization
+
+## 📱 Browser Support
+
+- Chrome (latest)
+- Firefox (latest)
+- Safari (latest)
+- Edge (latest)
 
 ## 🤝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+This is a challenge submission. For any questions or feedback, please reach out through the provided contact channels.
 
-## 📄 License
+---
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- [REST Countries API](https://restcountries.com/) for providing country data
-- [Vue.js](https://vuejs.org/) for the amazing framework
-- [Tailwind CSS](https://tailwindcss.com/) for the utility-first CSS framework
-- [Headless UI](https://headlessui.com/) for accessible components
+**Built with ❤️ by Mehdi Rafiei** | **Vue.js Challenge Submission**
