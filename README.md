@@ -10,6 +10,8 @@ A responsive country directory built with Vue 3 and TypeScript. Browse country d
 | ---------------------------------------------------- | ------------------------------------------------------- |
 | ![Country directory](docs/screenshots/countries.png) | ![Country details](docs/screenshots/country-detail.png) |
 
+**Live demo API limit:** The demo shares one REST Countries API key across all visitors. Its current plan allows up to **1,000 requests per month**. Loading the paginated country list takes multiple API requests, and detail pages can make additional requests. If the monthly quota is exhausted, the API may reject requests and the app will show its load error and retry option; it does not switch to sample data. The demo may be unavailable until the quota resets. To review it after that, run the project locally with your own API key.
+
 ## Stack
 
 Vue 3, TypeScript, Vite, Tailwind CSS, Pinia, Vue Router, TanStack Vue Query, and the [REST Countries API](https://restcountries.com/).
