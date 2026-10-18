@@ -24,13 +24,17 @@ npm run dev
 
 The app uses REST Countries API v5 through a small proxy, keeping the API key out of the browser bundle. Create a key at [restcountries.com](https://restcountries.com/sign-up), copy `.env.example` to `.env`, and replace the placeholder value. `REST_COUNTRIES_API_KEY` is server-side configuration. `VITE_API_BASE_URL` is public and must never contain a secret. A real API key is required; without one, the API request will fail instead of quietly showing demo data.
 
-Useful checks:
+## Tests
+
+The unit and integration suite covers API pagination and mapping, country card and search behavior, filter state, URL synchronization, and navigation between the directory and detail pages. The browser suite runs Chromium against a mocked REST Countries API so it can verify search, region and sort filters, direct links, country details, and local territory flags without relying on a live API key.
 
 ```sh
 npm run type-check
 npm run lint
 npm run test:unit -- --run
 npm run build
+npx playwright install chromium  # one time per machine
+npm run test:e2e -- --project=chromium
 ```
 
 ## Deploy on Netlify
