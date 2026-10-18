@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/vue-query'
 import { useRoute, useRouter } from 'vue-router'
 import Fuse from 'fuse.js'
 import { countriesApi } from '@/api/countries'
+import { REGIONS } from '@/types/country'
 import type { Region, SortBy, SortOrder } from '@/types/country'
 
 export const useCountriesStore = defineStore('countries', () => {
@@ -21,8 +22,7 @@ export const useCountriesStore = defineStore('countries', () => {
     searchQuery.value = (query.search as string) || ''
 
     const region = query.region as string
-    const validRegions: Region[] = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
-    selectedRegion.value = validRegions.includes(region as Region) ? (region as Region) : 'All'
+    selectedRegion.value = REGIONS.includes(region as Region) ? (region as Region) : 'All'
 
     const sortByParam = query.sortBy as string
     const validSortBy: (SortBy | null)[] = ['name', 'population', null]
