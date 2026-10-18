@@ -4,7 +4,7 @@ A responsive country directory built with Vue 3 and TypeScript. Browse country d
 
 ## Preview
 
-[Live demo](https://countries-explorer-mehdispace.netlify.app/)
+Live demo: [countries-explorer-mehdispace.netlify.app](https://countries-explorer-mehdispace.netlify.app/)
 
 | Country directory                                    | Country details                                         |
 | ---------------------------------------------------- | ------------------------------------------------------- |
