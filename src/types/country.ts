@@ -1,70 +1,66 @@
 export interface Country {
-  name: {
+  names: {
     common: string
-    official: string
-    nativeName?: {
-      [key: string]: {
-        official: string
-        common: string
-      }
-    }
+    native?: Record<string, { common: string; official: string }>
   }
-  flags: {
-    png: string
-    svg: string
-    alt?: string
+  codes?: {
+    alpha_3?: string
+  }
+  flag?: {
+    url_svg?: string
   }
   population: number
   region: string
   subregion?: string
-  capital: string[]
-  cca3: string
-  cca2?: string
-  currencies?: {
-    [key: string]: {
-      name: string
-      symbol: string
-    }
-  }
-  languages?: {
-    [key: string]: string
-  }
-  tld?: string[]
-  borders?: string[]
+  capitals?: { name: string } | { name: string }[]
+  currencies?: { name: string } | Record<string, { name: string }>
+  languages?: { name: string }[]
+  tlds?: string | string[]
+  borders?: string | string[]
 }
 
 export interface CountryCard {
+  id: string
+  code?: string
   name: string
   flag: string
   population: number
   region: string
   capital: string
-  cca3: string
 }
 
-export interface CountryDetail {
-  name: string
+export interface CountryDetail extends CountryCard {
   nativeName: string
-  population: number
-  region: string
   subregion: string
-  capital: string
-  flag: string
   topLevelDomain: string
   currencies: string
   languages: string
   borders: string[]
-  cca3: string
 }
 
-export type CountriesResponse = Country[]
+export interface CountriesResponse {
+  data: {
+    objects: Country[]
+    meta: {
+      total: number
+    }
+  }
+}
 
 export interface CountryFilters {
   search: string
   region: string
 }
 
-export const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania'] as const
+export const REGIONS = [
+  'All',
+  'Africa',
+  'Americas',
+  'Asia',
+  'Europe',
+  'Oceania',
+  'Antarctic',
+] as const
 
 export type Region = (typeof REGIONS)[number]
 

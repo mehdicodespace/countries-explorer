@@ -101,12 +101,12 @@ watch(
       <!-- Flag -->
       <div class="w-full lg:w-5/12 mb-8 lg:mb-0">
         <div
-          class="aspect-[4/3] overflow-hidden rounded-lg shadow-lg max-w-sm mx-auto lg:max-w-none lg:mx-0"
+          class="aspect-[2/1] overflow-hidden rounded-lg bg-white shadow-lg max-w-sm mx-auto lg:max-w-none lg:mx-0"
         >
           <img
             :src="country.flag"
             :alt="`Flag of ${country.name}`"
-            class="w-full h-full object-cover"
+            class="w-full h-full object-contain"
             loading="lazy"
             @error="handleImageError"
           />
@@ -183,8 +183,10 @@ watch(
               <template v-else-if="borderCountries && borderCountries.length > 0">
                 <button
                   v-for="borderCountry in borderCountries"
-                  :key="borderCountry.cca3"
-                  @click="router.push(`/country/${borderCountry.cca3}`)"
+                  :key="borderCountry.id"
+                  @click="
+                    router.push({ name: 'country-detail', params: { code: borderCountry.id } })
+                  "
                   class="px-4 py-2 bg-white dark:bg-primary text-neutral-900 dark:text-white rounded-md shadow-md hover:shadow-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 focus:outline-none focus:ring-0 text-sm cursor-pointer"
                 >
                   {{ borderCountry.name }}

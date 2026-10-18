@@ -28,11 +28,11 @@ const handleImageError = (event: Event) => {
     @click="emit('click', country)"
   >
     <!-- Flag Image -->
-    <div class="aspect-[4/3] overflow-hidden">
+    <div class="aspect-[2/1] overflow-hidden bg-white">
       <img
         :src="country.flag"
         :alt="`Flag of ${country.name}`"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-contain"
         loading="lazy"
         @error="handleImageError"
       />

@@ -58,9 +58,9 @@ onMounted(() => {
     >
       <CountryCard
         v-for="country in countries"
-        :key="country.cca3"
+        :key="country.id"
         :country="country"
-        @click="(country) => router.push(`/country/${country.cca3}`)"
+        @click="(country) => router.push({ name: 'country-detail', params: { code: country.id } })"
       />
     </div>
 
